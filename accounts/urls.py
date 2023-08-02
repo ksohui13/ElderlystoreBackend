@@ -8,10 +8,16 @@ urlpatterns = [
     path('dj-rest-auth/', include('dj_rest_auth.urls')),
     path('dj-rest-auth/registration/', include('dj_rest_auth.registration.urls')),
     path('accounts/', include('allauth.urls')),
-    path('accounts-rest/registrations/account-confirm-emil/(?P<key>.+)/$', confirm_email, name='account_confirm_email'),
+    #path('accounts-rest/registrations/account-confirm-emil/(?P<key>.+)/$', confirm_email, name='account_confirm_email'),
 
     #소셜
+    #구글
     path('google/login', views.google_login, name='google_login'),
     path('google/callback/', views.google_callback, name='google_callback'),
     path('google/login/finish/', views.GoogleLogin.as_view(), name='google_login_todjango'),
+
+    #카카오
+    path('kakao/login/', views.kakao_login, name='kakao_login'),
+    path('kakao/callback/', views.kakao_callback, name='kakao_callback'),
+    path('kakao/login/finish/', views.KakaoLogin.as_view(), name='kakao_login_todjango'),
 ]

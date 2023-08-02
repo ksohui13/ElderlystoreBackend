@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     #소셜 로그인
     'allauth.socialaccount', 
     'allauth.socialaccount.providers.google',
+    'allauth.socialaccount.providers.kakao',
 
     #app
     'accounts',
