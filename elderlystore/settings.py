@@ -31,11 +31,15 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'django.contrib.sites', #추가
+    'django.contrib.sites',
 
     #allauth
     'allauth',
     'allauth.account',
+
+    #소셜 로그인
+    'allauth.socialaccount', 
+    'allauth.socialaccount.providers.google',
 
     #app
     'accounts',
@@ -54,6 +58,7 @@ INSTALLED_APPS = [
     'rest_auth',
     'rest_framework_simplejwt',
     'rest_auth.registration',
+
 ]
 
 MIDDLEWARE = [
@@ -170,7 +175,7 @@ STATICFILES_DIRS = [
 #auth_model
 AUTH_USER_MODEL = 'accounts.User'
 
-SITE_ID = 1
+SITE_ID = 1 #사이트 한개만 사용함
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
 REST_USE_JWT = True
@@ -193,7 +198,7 @@ REST_FRAMEWORK = {
         'rest_framework.permissions.AllowAny',  # 누구나 접근 가능
     ),
     'DEFAULT_AUTHENTICATION_CLASSES': (
-        # 'rest_framework.authentication.SessionAuthentication',
+        'rest_framework.authentication.SessionAuthentication',
         'rest_framework.authentication.BasicAuthentication',
         'rest_framework_simplejwt.authentication.JWTAuthentication',  # JWT를 통한 인증방식 사용
         'dj_rest_auth.jwt_auth.JWTCookieAuthentication',
