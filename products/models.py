@@ -1,10 +1,10 @@
 from django.db import models
-from core.models import TimeStampModel
+from mainshop.models import TimeStampModel
 
-class Product(TimeStampModel):
+class Products(TimeStampModel):
     #products
     #상품 번호
-    product_id = models.IntegerField()
+    product_id = models.AutoField(primary_key=True)
     #카테고리 식별 id
     main_category_id = models.CharField()
     # 상품명
@@ -16,7 +16,7 @@ class Product(TimeStampModel):
     #노인 복지 스토어 가격
     price_sale = models.IntegerField()
     #정가 - 복지스토어 가격
-    price_sale = models.IntegerField()
+    discount = models.IntegerField()
     #재고
     product_sotck = models.IntegerField()
     #등록 날짜

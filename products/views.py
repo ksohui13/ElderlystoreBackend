@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from products.models import Product
+from products.models import Products
 from django.db.models import Sum, Q
 from django.views import View
 from django.http import JsonResponse
@@ -15,40 +15,42 @@ class ProductView(View):
             limit = int(request.GET.get('limit', 100))
 
             if main_category and main_category != None:
-                products = Product.objects.filter(Q(sub_category__main_category__id = main_category))
+                products = Products.objects.filter(Q(sub_category__main_category__id = main_category))
 
             if best_seller and best_seller != None:
                 quantity = int(best_seller)
-                products = Product.objects.annotate(quantity_sum = Sum('orderitem__quantity')).order_by('-quantity_sum')[:quantity]
+                products = Products.objects.annotate(quantity_sum = Sum('orderitem__quantity')).order_by('-quantity_sum')[:quantity]
 
             if sub_category and sub_category != None:
-               products = Product.objects.filter(Q(sub_category__id = sub_category))
+               products = Products.objects.filter(Q(sub_category__id = sub_category))
 
             if keyword and keyword != None:
-                products = Product.objects.filter(Q(name__icontains = keyword) | Q(collection__name__icontains = keyword))
+                products = Products.objects.filter(Q(name__icontains = keyword) | Q(collection__name__icontains = keyword))
 
             if limit > 100:
                 return JsonResponse({'message' : 'TOO_MUCH_LIMIT'}, status = 400) 
             
             limit = offset + limit
 
-            if (main_category or best_seller or sub_category or scent or keyword) == None:
-                products = Product.objects.all()[offset:limit]
+            if (main_category or best_seller or sub_category or keyword) == None:
+                products = Products.objects.all()[offset:limit]
 
             result = [{
-                'id'            : product.id,
-                'name'          : product.name,
-                'collection'    : product.collection.name,
-                'sub_category'  : product.sub_category.name,
-                'size_g'        : product.size_g,
-                'size_oz'       : product.size_oz,
-                'price'         : product.price,
-                'description'   : product.description,
-                'image'         : product.productimage_set.get(is_thumbnail=True).image_url
-            } for product in products]
+                'product_id'           : products.product_id,
+                'main_category_id'     : products.main_category_id,
+                'product_name'         : products.product_name,
+                'price_origin'         : products.price_origin,
+                'price_sale'           : products.price_sale,
+                'discount'             : products.discount,
+                'product_sotck'        : products.product_sotck,
+                'product_des'          : products.product_des,
+                'product_date'         : products.product_date,
+                'product_ordering_num' : products.product_ordering_num, 
+
+            } for products in products]
             return JsonResponse({'result':result}, status = 200)
         
-        except Product.DoesNotExist:
+        except Products.DoesNotExist:
             return JsonResponse({'message' : 'PRODUCT_NOT_FOUND'}, status = 404)
         
         except ValueError:
@@ -57,24 +59,23 @@ class ProductView(View):
 class ProductDetail(View):
     def get(self, request, product_id):
         try:
-            product = Product.objects.get(id=product_id)
-            images = [product_image.image_url for product_image in product.productimg_set.order_by('_is_thumbnail').all()]
-            scent = [scent.description for scent in product.scent_set.all()]
+            products = Products.objects.get(id=product_id)
             result = {
-                    'id'            : product.id,
-                    'name'          : product.name,
-                    'collection'    : product.collection.name,
-                    'sub_category'  : product.sub_category.name,
-                    'size_g'        : product.size_g,
-                    'size_oz'       : product.size_oz,
-                    'price'         : product.price,
-                    'description'   : product.description,
-                    'image'         : product.productimage_set.get(is_thumbnail=True).image_url
+                'product_id'           : products.product_id,
+                'main_category_id'     : products.main_category_id,
+                'product_name'         : products.product_name,
+                'price_origin'         : products.price_origin,
+                'price_sale'           : products.price_sale,
+                'discount'             : products.discount,
+                'product_sotck'        : products.product_sotck,
+                'product_des'          : products.product_des,
+                'product_date'         : products.product_date,
+                'product_ordering_num' : products.product_ordering_num, 
             }
             
             return JsonResponse({'result' : result}, status = 200)
         
-        except Product.DoesNotExist:
+        except Products.DoesNotExist:
             return JsonResponse({'message' : 'PRODUCT_NOT_FOUND'}, status = 404)
          
         except ValueError:
