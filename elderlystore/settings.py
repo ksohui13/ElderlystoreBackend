@@ -31,6 +31,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django.contrib.sites', #추가
 
     #allauth
     'allauth',
@@ -52,6 +53,7 @@ INSTALLED_APPS = [
     'rest_framework.authtoken',
     'rest_auth',
     'rest_framework_simplejwt',
+    'rest_auth.registration',
 ]
 
 MIDDLEWARE = [
@@ -170,11 +172,19 @@ AUTH_USER_MODEL = 'accounts.User'
 
 SITE_ID = 1
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+
 REST_USE_JWT = True
 ACCOUNT_USER_MODEL_USERNAME_FIELD = None    #username필드 사용하지 않음
 ACCOUNT_EMAIL_REQUIRED = True               #email필드 사용
+ACCOUNT_UNIQUE_EMAIL = True                 #emial 중복불가
 ACCOUNT_USERNAME_REQUIRED = False           #username 필드를 사용하지 않으므로 false 설정
+# ACCOUNT_EMAIL_VERIFICATION = None      #이메일 인증 안함
+
 ACCOUNT_AUTHENTICATION_METHOD = 'email'     #로그인 인증 방법 : email
+ACCOUNT_EMAIL_VERIFICATION = 'mandatory'    #추가 : 이메일 인증방법
+ACCOUNT_CONFIRM_EMAIL_ON_GET = True         #추가 : 이메일 인증
+ACCOUNT_EMAIL_CONFIRMATION_ANONYMOUS_REDIRECT_URL = '/?verification=1' #추가 : 사용자가 확인링크 클릭시 해당 url로 리디렉션
+ACCOUNT_EMAIL_CONFIRMATION_AUTHENTICATED_REDIRECT_URL = '/?verification=1' #추가 : 리디렉션 url
 
 REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': (
@@ -188,6 +198,10 @@ REST_FRAMEWORK = {
         'rest_framework_simplejwt.authentication.JWTAuthentication',  # JWT를 통한 인증방식 사용
         'dj_rest_auth.jwt_auth.JWTCookieAuthentication',
     ),
+}
+
+REST_AUTH_SERIALIZERS = {
+    'USER_DETAILS_SERIALIZER': 'users.serializers.UserSerializer',
 }
 
 REST_USE_JWT = True
