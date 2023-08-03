@@ -74,7 +74,7 @@ class ProductDetail(View):
                 'product_des'          : products.product_des,
                 'product_date'         : products.product_date,
                 'product_ordering_num' : products.product_ordering_num,
-                'product_image'        : product_images.product_image,
+                'product_image'        : product_images.image_url,
             }
             
             return JsonResponse({'result' : result}, status = 200)
