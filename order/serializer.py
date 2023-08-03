@@ -1,6 +1,5 @@
 from rest_framework import serializers
-from order.models import Order, OrderItem
-
+from order.models import Order, OrderItem, Shipping
 
 class OrderSerializer(serializers.Serializer):
     order_number = serializers.ReadOnlyField(
@@ -14,4 +13,9 @@ class OrderSerializer(serializers.Serializer):
 class OrderItemSerializer(serializers.Serializer):
     class Meta:
         model: OrderItem
+        read_only_fields = '__all__'
+
+class ShippingSerializer(serializers.Serializer):
+    class Meta:
+        model: Shipping
         read_only_fields = '__all__'
