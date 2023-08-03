@@ -1,21 +1,17 @@
-from .models import Quest, QComment
 from rest_framework import serializers
+from order.models import Order, OrderItem
 
 
-class QCommentSerializer(serializers.ModelSerializer):
-    user = serializers.ReadOnlyField(source = 'user.email')
-
-    class Meta:
-        model = QComment
-        fields = '__all__'
-        read_only_fields = ['quest', 'user']
-
-
-class QuestSerializer(serializers.ModelSerializer):
-    user = serializers.ReadOnlyField(source = 'user.email')
-    qcomment = QCommentSerializer(many=True, read_only = True)
+class OrderSerializer(serializers.Serializer):
+    order_number = serializers.ReadOnlyField(
+        source = 'order.order_number'
+    )
 
     class Meta:
-        model = Quest
-        fields = '__all__'
-        read_only_fields = ['user', 'qcreated_at', 'qupdated_at','qcomment']
+        model = Order
+        read_only_fields = '__all__'
+
+class OrderItemSerializer(serializers.Serializer):
+    class Meta:
+        model: OrderItem
+        read_only_fields = '__all__'
