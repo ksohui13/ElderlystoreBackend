@@ -22,9 +22,6 @@ class ProductView(View):
                 quantity = int(best_seller)
                 products = Products.objects.annotate(quantity_sum = Sum('orderitem__quantity')).order_by('-quantity_sum')[:quantity]
 
-            if sub_category and sub_category != None:
-               products = Products.objects.filter(Q(sub_category__id = sub_category))
-
             if keyword and keyword != None:
                 products = Products.objects.filter(Q(name__icontains = keyword) | Q(collection__name__icontains = keyword))
 
