@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'allauth.socialaccount', 
     'allauth.socialaccount.providers.google',
     'allauth.socialaccount.providers.kakao',
+    'allauth.socialaccount.providers.naver',
 
     #app
     'accounts',
@@ -50,6 +51,7 @@ INSTALLED_APPS = [
     'mainshop',
     'order',
     'products',
+    'review',
 
     #drf
     'rest_framework',
