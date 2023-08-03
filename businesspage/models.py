@@ -25,11 +25,3 @@ class QComment(models.Model):
 
     def __str__(self) -> str:
         return self.comment_text
-    
-
-#배송상태 수정중
-class Shipping(models.Model):
-    product  = models.ForeignKey(Product, on_delete=models.CASCADE)     #상품
-    ship_number = models.CharField(max_length=100) #송장번호
-    ship_status = models.CharField(max_length=100) #배송 상태 배송전/배송중/배송완료
-    ship_date = models.DateTimeField(auto_now=True) #수정일자
