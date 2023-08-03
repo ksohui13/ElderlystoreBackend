@@ -3,6 +3,7 @@ from django.views import View
 from django.contrib.auth.decorators import login_required
 from django.views.generic import ListView
 
+#주문 내역 조회
 @login_required
 class OrderList(ListView):
     template_name = "order.html"

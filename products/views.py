@@ -38,16 +38,17 @@ class ProductView(View):
 
             result = [{
                 'product_id'           : products.product_id,
-                'main_category_id'     : products.main_category_id,
+                'main_category'        : products.main_category,
                 'product_name'         : products.product_name,
                 'price_origin'         : products.price_origin,
                 'price_sale'           : products.price_sale,
                 'discount'             : products.discount,
                 'product_sotck'        : products.product_sotck,
                 'product_des'          : products.product_des,
-                'product_date'         : products.product_date,
-                'product_ordering_num' : products.product_ordering_num,
-                'product_images'       : product_images.image_url, 
+                'product_image'        : product_images.image_url,
+                'detail_description'   : products.detail_description,
+                'ingredient'           : products.ingredient,
+                'quantity'             : products.quantity,
 
             } for products in products and product_images in products]
             return JsonResponse({'result':result}, status = 200)
@@ -65,16 +66,17 @@ class ProductDetail(View):
             product_images = ProductImage.objects.get()
             result = {
                 'product_id'           : products.product_id,
-                'main_category_id'     : products.main_category_id,
+                'main_category'        : products.main_category,
                 'product_name'         : products.product_name,
                 'price_origin'         : products.price_origin,
                 'price_sale'           : products.price_sale,
                 'discount'             : products.discount,
                 'product_sotck'        : products.product_sotck,
                 'product_des'          : products.product_des,
-                'product_date'         : products.product_date,
-                'product_ordering_num' : products.product_ordering_num,
                 'product_image'        : product_images.image_url,
+                'detail_description'   : products.detail_description,
+                'ingredient'           : products.ingredient,
+                'quantity'             : products.quantity,
             }
             
             return JsonResponse({'result' : result}, status = 200)
