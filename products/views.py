@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from products.models import Products
+from products.models import Products, ProductImage
 from django.db.models import Sum, Q
 from django.views import View
 from django.http import JsonResponse
@@ -13,6 +13,7 @@ class ProductView(View):
             keyword = request.GET.get('keyword', None)
             offset = int(request.GET.get('offset', 0))
             limit = int(request.GET.get('limit', 100))
+            product_images = request.GET.get('product_images', None)
 
             if main_category and main_category != None:
                 products = Products.objects.filter(Q(sub_category__main_category__id = main_category))
@@ -45,9 +46,10 @@ class ProductView(View):
                 'product_sotck'        : products.product_sotck,
                 'product_des'          : products.product_des,
                 'product_date'         : products.product_date,
-                'product_ordering_num' : products.product_ordering_num, 
+                'product_ordering_num' : products.product_ordering_num,
+                'product_images'       : product_images.image_url, 
 
-            } for products in products]
+            } for products in products and product_images in products]
             return JsonResponse({'result':result}, status = 200)
         
         except Products.DoesNotExist:
@@ -60,6 +62,7 @@ class ProductDetail(View):
     def get(self, request, product_id):
         try:
             products = Products.objects.get(id=product_id)
+            product_images = ProductImage.objects.get()
             result = {
                 'product_id'           : products.product_id,
                 'main_category_id'     : products.main_category_id,
@@ -70,7 +73,8 @@ class ProductDetail(View):
                 'product_sotck'        : products.product_sotck,
                 'product_des'          : products.product_des,
                 'product_date'         : products.product_date,
-                'product_ordering_num' : products.product_ordering_num, 
+                'product_ordering_num' : products.product_ordering_num,
+                'product_image'        : product_images.product_image,
             }
             
             return JsonResponse({'result' : result}, status = 200)

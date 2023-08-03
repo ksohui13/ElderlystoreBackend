@@ -27,23 +27,13 @@ class Products(TimeStampModel):
     class Meta:
         db_table = 'products'
 
-class ProductImg(TimeStampModel):
-    #product_img
-    #파일 이름
-    origin_file_name = models.CharField()
-    #상품 번호
-    product_number = models.IntegerField()
-    #상품이미지 파일번호
-    file_number = models.IntegerField()
-    #썸네일 이미지
-    thumbnail = models.ImageField(upload_to='products/images', blank=False)
-    #파일 크기
-    file_size = models.IntegerField()
-    #생성일
-    created_at = models.DateTimeField()
+class ProductImage(TimeStampModel):
+    image_url    = models.URLField()
+    is_thumbnail = models.BooleanField(default=False)
+    product      = models.ForeignKey('Product', on_delete=models.CASCADE)
 
     class Meta:
-        db_table = 'product_img'
+        db_table = 'product_images'
 
 class ProdcutReview(TimeStampModel):
     #product_review / 상품 번호 중복이라서 안 적음
