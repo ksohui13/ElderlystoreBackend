@@ -9,7 +9,7 @@ class ProductView(View):
         try:
             main_category = request.GET.get('main_category', None)
             best_seller = request.GET.get('best_seller', None)
-            sub_category = request.GET.get('sub_category', None)
+            sub_category = request.GET.get('sub_category', None) #main_category로 변경 (현재프로젝트에선 sub개발 계획 없음!)
             keyword = request.GET.get('keyword', None)
             offset = int(request.GET.get('offset', 0))
             limit = int(request.GET.get('limit', 100))
@@ -46,7 +46,7 @@ class ProductView(View):
                 'product_sotck'        : products.product_sotck,
                 'product_des'          : products.product_des,
                 'product_image'        : product_images.image_url,
-                'detail_description'   : products.detail_description,
+                'detail_description'   : products.detail_description, #detailview class에서 추가 (현재 클래스에선 삭제)
                 'ingredient'           : products.ingredient,
                 'quantity'             : products.quantity,
 
