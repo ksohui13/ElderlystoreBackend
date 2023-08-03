@@ -6,10 +6,3 @@ class TimeStampModel(models.Model):
 
     class Meta:
         abstract = True
-
-class Maincategories(models.Model):
-    main_category_id = models.AutoField(primary_key=True)
-    main_category = models.CharField()
-
-    class Meta:
-        db_table = 'main_categories'

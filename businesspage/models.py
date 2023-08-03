@@ -1,16 +1,27 @@
 from django.db import models
-from mainshop.models import TimeStampModel
+from django.conf import settings
+from accounts.models import User
+from products.models import Products
 
-class Businesspage(TimeStampModel):
-    order_detail_number = models.IntegerField()
 
-    class Meta:
-        db_table = 'businesspage'
+#상품문의
+class Quest(models.Model):
+    qid = models.AutoField(primary_key=True, null=False, blank=False)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    qtitle = models.CharField(max_length=50)
+    quest_text = models.TextField()
+    qimage = models.ImageField(null=True, blank=True)
+    qcreated_at = models.DateTimeField(auto_now_add=True)
+    qupdated_at = models.DateTimeField(auto_now_add=True)
 
-class deliver(TimeStampModel):
-    deliver_number = models.AutoField(primary_key=True)
-    deliver_status = models.CharField(max_length=50)
-    deliver_updated_at = models.DateTimeField(auto_now=True)
+    def __str__(self) -> str:
+        return self.qtitle
 
-    class Meta:
-        db_table = 'deliver'
+#상품문의 댓글
+class QComment(models.Model):
+    quest_id = models.ForeignKey(Quest, related_name="qcomment", on_delete=models.CASCADE, db_column="qid")
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    comment_text = models.CharField(max_length=500)
+
+    def __str__(self) -> str:
+        return self.comment_text
